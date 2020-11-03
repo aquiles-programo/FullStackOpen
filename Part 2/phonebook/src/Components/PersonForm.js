@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const PersonForm = ({persons, handleSetperson}) => {
+const PersonForm = ({persons, handleSetperson, handleEditPerson}) => {
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
 
@@ -11,19 +11,21 @@ const PersonForm = ({persons, handleSetperson}) => {
     setNewPhone(event.target.value)
   }
 
+
   const handlePersonAdd = (event) => {
     event.preventDefault()
+    let duplicatedPerson = persons.find(p => p.name === newName)
     if (newName.length === 0 || newPhone.length === 0 ) {
       alert('You must fill both fields')
-    } else if (!persons.find(person => person.name === newName)) {
-      handleSetperson(persons.concat({ name: newName, phone: newPhone}))
-      setNewName('')
-      setNewPhone('')
-    } else {
-      alert(`${newName} is already added to phonebook`)
-      setNewName('')
-      setNewPhone('')
+    } else if (!duplicatedPerson) {
+      handleSetperson({ name: newName, phone: newPhone})
+    } else if (duplicatedPerson.phone !== newPhone) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) { 
+        handleEditPerson({...duplicatedPerson, phone: newPhone })
+      }
     }
+    setNewName('')
+    setNewPhone('')
   }
 
   return (
