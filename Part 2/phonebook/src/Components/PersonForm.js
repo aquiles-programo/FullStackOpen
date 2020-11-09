@@ -14,7 +14,7 @@ const PersonForm = ({persons, handleSetperson, handleEditPerson}) => {
 
   const handlePersonAdd = (event) => {
     event.preventDefault()
-    let duplicatedPerson = persons.find(p => p.name === newName)
+    let duplicatedPerson = persons.find(p => p.name.toUpperCase() === newName.toUpperCase())
     if (newName.length === 0 || newPhone.length === 0 ) {
       alert('You must fill both fields')
     } else if (!duplicatedPerson) {
